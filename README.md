@@ -59,41 +59,6 @@ The retrieved context and the user's question are then provided to the LLM, whic
 
 ---
 
-## 📊 Evaluation Framework
-
-A structured evaluation framework is planned to measure both retrieval quality and answer generation quality.
-
-### RAGAS
-
-RAGAS will be used to evaluate the overall RAG pipeline using metrics related to:
-
-- Faithfulness
-- Answer relevancy
-- Context relevance
-- Context recall
-
-### RAGChecker
-
-RAGChecker is planned for fine-grained analysis of the RAG pipeline to identify whether errors originate from:
-
-- Document retrieval
-- Context selection
-- Answer generation
-
-### Custom Evaluation Metrics
-
-StudySphere AI will also include application-specific metrics such as:
-
-- Retrieval Hit Rate
-- Context Relevance
-- Answer Groundedness
-- Response Time
-- Retrieval Accuracy
-
-These evaluations will help identify weaknesses in the RAG pipeline and guide future improvements.
-
----
-
 ## 🔮 Future Enhancements
 
 The current keyword-based retrieval system will be upgraded into a semantic RAG architecture.
