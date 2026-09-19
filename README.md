@@ -1,113 +1,90 @@
-# 📚 StudySphere AI
+📚 StudySphere AI
 
 StudySphere AI is an AI-powered study assistant that allows students to upload their study material, ask questions, and receive context-aware answers grounded in the uploaded document.
 
-The application uses a RAG-style (Retrieval-Augmented Generation) pipeline to retrieve relevant information from study material and uses a Large Language Model through the Groq API to generate clear, student-friendly answers.
+The application uses a semantic RAG (Retrieval-Augmented Generation) pipeline — sentence embeddings and cosine similarity search — to retrieve relevant information from study material, then uses a Large Language Model through the Groq API to generate clear, student-friendly answers.
 
----
+🚀 Features
 
-## 🚀 Features
+* 📄 Upload personal study notes
+* 💬 Ask questions directly from uploaded documents
+* ✂️ Automatic text chunking with overlapping chunks
+* 🧠 Semantic retrieval using sentence embeddings (not keyword matching)
+* 🔍 Cosine similarity search to find the most relevant chunks
+* 🎯 Top-K retrieval — combines the top 3 most relevant excerpts as context
+* 🤖 AI-powered answer generation using Groq LLM
+* 🎯 Answers grounded in the uploaded document
+* 🔎 View the retrieved context (with similarity scores) used to generate an answer
+* 🔐 Secure API key management using Streamlit Secrets
+* 🌐 Interactive web interface built with Streamlit
 
-- 📄 Upload personal study notes
-- 💬 Ask questions directly from uploaded documents
-- ✂️ Automatic text chunking with overlapping chunks
-- 🔍 Retrieval of relevant context from study material
-- 🤖 AI-powered answer generation using Groq LLM
-- 🎯 Answers grounded in the uploaded document
-- 🔎 View the retrieved context used to generate an answer
-- 🔐 Secure API key management using Streamlit Secrets
-- 🌐 Interactive web interface built with Streamlit
-- ☁️ Deployed as a publicly accessible web application
+🧠 How It Works
 
----
+The StudySphere AI pipeline follows this workflow:
 
-## 🧠 How It Works
-
-The current StudySphere AI pipeline follows this workflow:
-
+```
 User Uploads Study Notes
         ↓
-Text Extraction
+   Text Extraction
         ↓
-Text Chunking
+   Text Chunking (overlapping chunks)
         ↓
-Keyword-Based Retrieval
+Sentence Transformer Embeddings (per chunk)
         ↓
-Most Relevant Chunk
+   In-Memory Vector Store
         ↓
-Prompt Construction
+     User Question
         ↓
-Groq LLM
+   Query Embedding (same model as chunks)
+        ↓
+Cosine Similarity Search
+        ↓
+   Top-K Relevant Chunks
+        ↓
+   Prompt Construction
+        ↓
+       Groq LLM
         ↓
 Context-Grounded Answer
+```
 
-The uploaded document is divided into overlapping chunks. When a user asks a question, the system compares keywords from the question with each chunk and retrieves the most relevant context.
+The uploaded document is split into overlapping chunks, and each chunk is converted into a numerical embedding using a Sentence Transformer model (`all-MiniLM-L6-v2`), run locally.
 
-The retrieved context and the user's question are then provided to the LLM, which generates an answer based on the available study material.
+When a user asks a question, the question is embedded using the same model, and compared against every chunk's embedding using cosine similarity. The top 3 most semantically relevant chunks are retrieved — this means the system matches based on **meaning**, not just exact keyword overlap, so a question can match relevant content even when it's phrased differently from the source text.
 
----
+The retrieved chunks and the user's question are then combined into a single prompt and passed to the LLM, which generates an answer grounded only in that retrieved context.
 
-## 🛠️ Tech Stack
+🛠️ Tech Stack
 
-- **Python** — Core programming language
-- **Streamlit** — Web application interface
-- **Groq API** — Fast LLM inference
-- **Llama 3.3 70B Versatile** — Large Language Model
-- **RAG-style Retrieval** — Context retrieval and grounded generation
-- **Text Chunking** — Document segmentation with overlapping chunks
-- **Keyword Matching** — Current retrieval mechanism
+* Python — Core programming language
+* Streamlit — Web application interface
+* Groq API — Fast LLM inference
+* Llama 3.3 70B Versatile — Large Language Model
+* Sentence Transformers (`all-MiniLM-L6-v2`) — Local embedding model for semantic retrieval
+* NumPy — Cosine similarity computation
+* Semantic RAG — Embedding-based retrieval and grounded generation
+* Text Chunking — Document segmentation with overlapping chunks
 
----
+🔮 Future Enhancements
 
-## 🔮 Future Enhancements
+Planned improvements to further strengthen the retrieval pipeline:
 
-The current keyword-based retrieval system will be upgraded into a semantic RAG architecture.
+* 📑 PDF document support (currently TXT only)
+* 🗄️ FAISS / dedicated vector database integration for larger documents
+* 📚 Multiple-document support
+* 🔀 Hybrid search — combining semantic search with keyword (BM25) matching for exact terms
+* 🏆 Reranking with a cross-encoder for more precise top-K selection
+* ✍️ Query rewriting to handle vague or poorly-phrased questions
+* 🔗 Source citations for generated answers
+* 📊 RAGAS-based evaluation
+* 🔬 RAGChecker-based pipeline analysis
+* 📈 Custom RAG evaluation dashboard
 
-Planned architecture:
-
-Document Upload (PDF / TXT)
-        ↓
-Text Extraction
-        ↓
-Text Chunking
-        ↓
-Sentence Transformer Embeddings
-        ↓
-FAISS Vector Database
-        ↓
-User Question
-        ↓
-Query Embedding
-        ↓
-Semantic Similarity Search
-        ↓
-Top-K Relevant Chunks
-        ↓
-Groq LLM
-        ↓
-Grounded Answer
-        ↓
-RAG Evaluation
-
-Future improvements include:
-
-- 📑 PDF document support
-- 🧠 Sentence Transformer embeddings
-- 🔎 Semantic search instead of keyword matching
-- 🗄️ FAISS vector database integration
-- 📚 Multiple-document support
-- 🎯 Top-K context retrieval
-- 🔗 Source citations for generated answers
-- 📊 RAGAS-based evaluation
-- 🔬 RAGChecker-based pipeline analysis
-- 📈 Custom RAG evaluation dashboard
-
----
-
-## ⚙️ Installation
+⚙️ Installation
 
 Clone the repository:
 
-```bash
+```
 git clone <your-repository-url>
 cd studysphere-ai
+```
