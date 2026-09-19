@@ -1,0 +1,4 @@
+streamlit
+groq
+numpy
+sentence-transformers
