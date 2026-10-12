@@ -1,0 +1,19 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables and API keys
+.env
+.streamlit/secrets.toml
+
+# Local vector database
+vectorstore/
+
+# Uploaded PDF documents
+data/documents/*.pdf
+
+# Temporary files
+*.tmp
